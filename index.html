@@ -392,6 +392,62 @@
             }
         }, { threshold: 0.5 });
         document.querySelectorAll('[data-count]').forEach(el => counterIO.observe(el));
+
+        // Invite form: simulate success + 24h cooldown
+        (function () {
+            const KEY = 'wdd_invite_submitted_at';
+            const COOLDOWN_MS = 24 * 60 * 60 * 1000;
+            const form = document.getElementById('invite-form');
+            const success = document.getElementById('invite-success');
+            const cooldownEl = document.getElementById('invite-cooldown');
+            if (!form || !success) return;
+
+            let timer = null;
+
+            const readTs = () => { try { return parseInt(localStorage.getItem(KEY) || '0', 10) || 0; } catch (e) { return 0; } };
+            const writeTs = (ts) => { try { localStorage.setItem(KEY, String(ts)); } catch (e) {} };
+            const clearTs = () => { try { localStorage.removeItem(KEY); } catch (e) {} };
+
+            const format = (ms) => {
+                const totalMin = Math.max(0, Math.ceil(ms / 60000));
+                const h = Math.floor(totalMin / 60);
+                const m = totalMin % 60;
+                if (h >= 1) return h + 'h ' + m + 'm';
+                return m + 'm';
+            };
+
+            const tick = (ts) => {
+                const remaining = (ts + COOLDOWN_MS) - Date.now();
+                if (remaining <= 0) {
+                    clearTs();
+                    if (timer) { clearInterval(timer); timer = null; }
+                    success.classList.add('hidden');
+                    form.classList.remove('hidden');
+                    form.reset();
+                    return;
+                }
+                if (cooldownEl) cooldownEl.textContent = format(remaining);
+            };
+
+            const showSuccess = (ts) => {
+                form.classList.add('hidden');
+                success.classList.remove('hidden');
+                tick(ts);
+                if (timer) clearInterval(timer);
+                timer = setInterval(() => tick(ts), 30000);
+            };
+
+            const existing = readTs();
+            if (existing && Date.now() - existing < COOLDOWN_MS) showSuccess(existing);
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (!form.checkValidity()) { form.reportValidity(); return; }
+                const now = Date.now();
+                writeTs(now);
+                showSuccess(now);
+            });
+        })();
     </script>
 
 </body>
