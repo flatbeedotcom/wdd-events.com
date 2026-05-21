@@ -3,257 +3,335 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EVENT SAVY | Tech, Web3 & Digital Future</title>
+    <title>WDD Events | Tech, Web3 & Digital Future Conferences</title>
+    <meta name="description" content="WDD Events curates premium tech, Web3, and digital transformation conferences across the USA, Dubai, and London. Architecting the digital future since 2026.">
+    <meta name="theme-color" content="#0E1116">
+    <link rel="canonical" href="https://savy-events.com/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://savy-events.com/">
+    <meta property="og:title" content="WDD Events | Tech, Web3 & Digital Future">
+    <meta property="og:description" content="Premium tech, Web3, and digital transformation conferences across the USA, Dubai, and London.">
+    <meta property="og:image" content="https://savy-events.com/og-image.png">
+    <meta property="og:site_name" content="WDD Events">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="WDD Events | Tech, Web3 & Digital Future">
+    <meta name="twitter:description" content="Premium tech, Web3, and digital transformation conferences across the USA, Dubai, and London.">
+    <meta name="twitter:image" content="https://savy-events.com/og-image.png">
+
+    <!-- Favicon (inline SVG, no extra request) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230E1116'/><text x='50' y='68' font-family='Space Grotesk,sans-serif' font-size='60' font-weight='700' text-anchor='middle' fill='%23C9A66B'>S</text></svg>">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind (Play CDN — swap for a compiled build for production) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        graphite: '#0E1116',
+                        surface:  '#1A1F26',
+                        gold:     '#C9A66B',
+                        mint:     '#5EE2C9',
+                        cream:    '#F4F1EA',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['"Space Grotesk"', 'sans-serif'],
+                    },
+                    transitionTimingFunction: {
+                        'expo-out': 'cubic-bezier(0.16, 1, 0.3, 1)',
+                    },
+                },
+            },
+        };
+    </script>
+
     <style>
-        :root {
-            --tech-blue: #00f2ff;
-            --web3-purple: #7000ff;
-            --bg-dark: #050505;
-            --glass: rgba(255, 255, 255, 0.05);
-        }
-
-        body, html {
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-dark);
-            color: #fff;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-        }
-
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; }
         h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; text-transform: uppercase; }
 
-        /* --- Parallax Hero Section --- */
-        .hero {
-            position: relative;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(to bottom, rgba(5,5,5,0.2), var(--bg-dark)),
-                        url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2000');
-            background-attachment: fixed;
-            background-position: center;
-            background-size: cover;
+        /* Desktop-only flex expansion on hover (touch devices skip this) */
+        @media (hover: hover) and (min-width: 768px) {
+            .col:hover { flex: 2; }
         }
 
-        .hero-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, transparent 20%, var(--bg-dark) 80%);
-        }
+        /* --- Scroll-reveal --- */
+        .reveal { opacity: 0; transform: translateY(24px); transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1); }
+        .reveal.in { opacity: 1; transform: none; }
+        .reveal-stagger > * { opacity: 0; transform: translateY(24px); transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1); }
+        .reveal-stagger.in > *:nth-child(1) { transition-delay: .00s; opacity: 1; transform: none; }
+        .reveal-stagger.in > *:nth-child(2) { transition-delay: .10s; opacity: 1; transform: none; }
+        .reveal-stagger.in > *:nth-child(3) { transition-delay: .20s; opacity: 1; transform: none; }
+        .reveal-stagger.in > *:nth-child(4) { transition-delay: .30s; opacity: 1; transform: none; }
 
-        .hero-content {
-            z-index: 10;
-            text-align: center;
-        }
+        /* --- Hero load animation --- */
+        @keyframes rise { from { opacity: 0; transform: translateY(20px); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+        .rise   { animation: rise 1.1s cubic-bezier(.16,1,.3,1) both; }
+        .rise-1 { animation-delay: .15s; }
+        .rise-2 { animation-delay: .40s; }
+        .rise-3 { animation-delay: .70s; }
 
-        .hero-content h1 {
-            font-size: clamp(3rem, 10vw, 6rem);
-            letter-spacing: -2px;
-            margin: 0;
-            background: linear-gradient(to right, #fff, var(--tech-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        /* --- Subtle gold drift behind hero --- */
+        @keyframes drift { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(-20px, 30px); } }
+        .drift { animation: drift 18s ease-in-out infinite; }
 
-        .hero-content p {
-            font-size: 1.2rem;
-            letter-spacing: 8px;
-            color: var(--tech-blue);
-            font-weight: 300;
-        }
+        /* --- Marquee for partners strip --- */
+        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        .marquee-track { animation: marquee 40s linear infinite; }
 
-        /* --- 3-Column Tech Row --- */
-        .event-row {
-            display: flex;
-            height: 90vh;
-            width: 100%;
-            background: #000;
-        }
+        /* --- Gold rule used between sections --- */
+        .gold-rule { width: 40px; height: 1px; background: #C9A66B; }
 
-        .column {
-            flex: 1;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 60px 40px;
-            text-decoration: none;
-            color: white;
-            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-            overflow: hidden;
-            border-right: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .column:hover { flex: 2; }
-
-        /* Backgrounds with Tech Overlays */
-        .column-bg {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-size: cover;
-            background-position: center;
-            filter: grayscale(100%) brightness(0.4);
-            transition: all 0.7s ease;
-            z-index: 1;
-        }
-
-        .column:hover .column-bg {
-            filter: grayscale(0%) brightness(0.6) scale(1.05);
-        }
-
-        .usa { background-image: url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=1000'); } /* Tech/Server style */
-        .dubai { background-image: url('https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&q=80&w=1000'); } /* Abstract Web3 style */
-        .london { background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1000'); } /* Circuit style */
-
-        .column-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .tag {
-            background: var(--tech-blue);
-            color: #000;
-            padding: 4px 12px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            border-radius: 2px;
-            margin-bottom: 15px;
-            display: inline-block;
-        }
-
-        .column h2 {
-            font-size: 3rem;
-            margin: 10px 0;
-            line-height: 1;
-        }
-
-        .column p {
-            font-size: 1rem;
-            color: rgba(255,255,255,0.7);
-            max-width: 280px;
-        }
-
-        /* --- Footer / Contact --- */
-        footer {
-            padding: 120px 20px;
-            background: linear-gradient(to bottom, #000, #0a0a0a);
-            text-align: center;
-        }
-
-        .contact-card {
-            display: inline-block;
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 60px;
-            border-radius: 20px;
-            max-width: 500px;
-        }
-
-        .contact-card h3 {
-            color: var(--tech-blue);
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            letter-spacing: 2px;
-        }
-
-        .address {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: #ccc;
-            margin-bottom: 30px;
-        }
-
-        .btn-web3 {
-            background: transparent;
-            color: var(--tech-blue);
-            border: 1px solid var(--tech-blue);
-            padding: 15px 40px;
-            text-decoration: none;
-            text-transform: uppercase;
-            font-weight: bold;
-            letter-spacing: 2px;
-            transition: 0.3s;
-        }
-
-        .btn-web3:hover {
-            background: var(--tech-blue);
-            color: #000;
-            box-shadow: 0 0 20px var(--tech-blue);
-        }
-
-        @media (max-width: 768px) {
-            .event-row { flex-direction: column; height: auto; }
-            .column { height: 450px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
-            .hero-content h1 { font-size: 3.5rem; }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal, .reveal-stagger > * { opacity: 1 !important; transform: none !important; transition: none !important; }
+            .rise, .drift, .marquee-track { animation: none !important; }
         }
     </style>
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "WDD Events",
+        "url": "https://savy-events.com",
+        "email": "hello@savy-events.com",
+        "foundingDate": "2026",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "400 NE 3rd Ave Unit 2708",
+            "addressLocality": "Fort Lauderdale",
+            "addressRegion": "FL",
+            "postalCode": "33301",
+            "addressCountry": "US"
+        }
+    }
+    </script>
 </head>
-<body>
+<body class="bg-graphite text-cream overflow-x-hidden antialiased">
 
-    <!-- Parallax Hero -->
-    <section class="hero">
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <p>EST. 2026</p>
-            <h1>SAVY EVENTS</h1>
-            <p>ARCHITECTING THE DIGITAL FUTURE</p>
-        </div>
-    </section>
+    <a href="#contact" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-gold focus:text-graphite focus:px-4 focus:py-2 focus:rounded">Skip to content</a>
 
-    <!-- 3 Column Row -->
-    <section class="event-row">
-        <!-- USA -->
-        <a href="#" class="column">
-            <div class="column-bg usa"></div>
-            <div class="column-content">
-                <span class="tag">AI & MARKETING</span>
-                <h2>USA</h2>
-                <p>Decoding the future of algorithmic marketing and consumer AI engagement.</p>
+    <main>
+        <!-- Hero -->
+        <section class="relative h-screen min-h-[640px] flex items-center justify-center bg-cover bg-center md:bg-fixed overflow-hidden"
+                 style="background-image: linear-gradient(to bottom, rgba(14,17,22,0.35), #0E1116), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2000');"
+                 aria-label="Hero">
+            <div class="drift absolute -top-1/4 -left-1/4 w-[80vw] h-[80vw] rounded-full bg-gold/10 blur-3xl pointer-events-none"></div>
+            <div class="absolute inset-0 bg-[radial-gradient(circle,_transparent_20%,_#0E1116_80%)] pointer-events-none"></div>
+
+            <div class="relative z-10 text-center px-4">
+                <p class="rise rise-1 text-gold text-sm md:text-base tracking-[0.5em] font-light mb-3">EST. 2026</p>
+                <h1 class="rise rise-2 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter bg-gradient-to-r from-cream to-gold bg-clip-text text-transparent">
+                    WDD Events
+                </h1>
+                <p class="rise rise-3 text-mint text-sm md:text-base tracking-[0.5em] font-light mt-4">ARCHITECTING THE DIGITAL FUTURE</p>
             </div>
-        </a>
 
-        <!-- DUBAI -->
-        <a href="#" class="column">
-            <div class="column-bg dubai"></div>
-            <div class="column-content">
-                <span class="tag">WEB3 & BLOCKCHAIN</span>
-                <h2>DUBAI</h2>
-                <p>The global epicenter for decentralized finance and the immersive metaverse.</p>
+            <!-- Scroll cue -->
+            <a href="#manifesto" aria-label="Scroll to manifesto" class="absolute bottom-8 left-1/2 -translate-x-1/2 text-gold/70 hover:text-gold transition-colors">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="animate-bounce">
+                    <path d="M12 5v14M5 12l7 7 7-7" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </a>
+        </section>
+
+        <!-- Manifesto -->
+        <section id="manifesto" class="py-28 md:py-40 px-6 max-w-4xl mx-auto reveal">
+            <p class="text-gold text-xs tracking-[0.4em] mb-6">MANIFESTO</p>
+            <div class="gold-rule mb-10"></div>
+            <h2 class="text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.05] tracking-tight mb-10 text-cream">
+                A new kind of <span class="text-gold">convening</span>.
+            </h2>
+            <div class="space-y-6 text-lg md:text-xl leading-relaxed text-cream/75 max-w-3xl">
+                <p>WDD Events is built for the post-platform era — three gatherings a year, in three cities that matter, for the operators shaping what comes after the internet we have today.</p>
+                <p>No panel parades. No keynote theater. Closed rooms, working sessions, and the kind of dialogue you cannot get from a livestream.</p>
+                <p class="text-cream">Three cities. Three theses. One conversation.</p>
             </div>
-        </a>
+        </section>
 
-        <!-- LONDON -->
-        <a href="#" class="column">
-            <div class="column-bg london"></div>
-            <div class="column-content">
-                <span class="tag">DIGITAL TRANSFORMATION</span>
-                <h2>LONDON</h2>
-                <p>Integrating legacy finance with the speed of modern digital infrastructure.</p>
+        <!-- Regions -->
+        <section class="flex flex-col md:flex-row md:h-[90vh] bg-graphite reveal" aria-label="Regional event programs">
+
+            <!-- New York -->
+            <a href="mailto:hello@savy-events.com?subject=New%20York%20Event%20Inquiry"
+               class="col group relative flex flex-1 flex-col justify-end p-10 md:p-14 overflow-hidden border-b md:border-b-0 md:border-r border-white/10 h-[420px] md:h-auto transition-[flex] duration-700 ease-expo-out focus:outline-none focus:ring-2 focus:ring-mint focus:ring-inset"
+               aria-label="New York — AI and marketing events. Email for inquiries.">
+                <img src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&q=80&w=1200"
+                     alt="" loading="lazy" decoding="async" width="1200" height="800"
+                     class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.35] transition-all duration-700 ease-expo-out group-hover:grayscale-0 group-hover:brightness-[0.55] group-hover:scale-105">
+                <div class="relative z-10">
+                    <span class="block h-px w-10 bg-mint mb-5"></span>
+                    <span class="inline-block bg-gold text-graphite px-3 py-1 text-xs font-bold rounded-sm mb-4 tracking-wider">AI &amp; MARKETING</span>
+                    <h2 class="text-5xl md:text-6xl font-bold leading-none my-2 text-cream">NEW YORK</h2>
+                    <p class="text-cream/70 max-w-xs mb-4">Decoding the future of algorithmic marketing and consumer AI engagement.</p>
+                    <p class="text-cream/40 text-xs tracking-widest">TRIBECA · Q2 2026</p>
+                </div>
+            </a>
+
+            <!-- Dubai -->
+            <a href="mailto:hello@savy-events.com?subject=Dubai%20Event%20Inquiry"
+               class="col group relative flex flex-1 flex-col justify-end p-10 md:p-14 overflow-hidden border-b md:border-b-0 md:border-r border-white/10 h-[420px] md:h-auto transition-[flex] duration-700 ease-expo-out focus:outline-none focus:ring-2 focus:ring-mint focus:ring-inset"
+               aria-label="Dubai — Web3 and blockchain events. Email for inquiries.">
+                <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=1200"
+                     alt="" loading="lazy" decoding="async" width="1200" height="800"
+                     class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.35] transition-all duration-700 ease-expo-out group-hover:grayscale-0 group-hover:brightness-[0.55] group-hover:scale-105">
+                <div class="relative z-10">
+                    <span class="block h-px w-10 bg-mint mb-5"></span>
+                    <span class="inline-block bg-gold text-graphite px-3 py-1 text-xs font-bold rounded-sm mb-4 tracking-wider">WEB3 &amp; BLOCKCHAIN</span>
+                    <h2 class="text-5xl md:text-6xl font-bold leading-none my-2 text-cream">DUBAI</h2>
+                    <p class="text-cream/70 max-w-xs mb-4">The global epicenter for decentralized finance and the immersive metaverse.</p>
+                    <p class="text-cream/40 text-xs tracking-widest">DIFC · Q3 2026</p>
+                </div>
+            </a>
+
+            <!-- Lisbon -->
+            <a href="mailto:hello@savy-events.com?subject=Lisbon%20Event%20Inquiry"
+               class="col group relative flex flex-1 flex-col justify-end p-10 md:p-14 overflow-hidden h-[420px] md:h-auto transition-[flex] duration-700 ease-expo-out focus:outline-none focus:ring-2 focus:ring-mint focus:ring-inset"
+               aria-label="Lisbon, Portugal — Digital transformation events. Email for inquiries.">
+                <img src="https://images.unsplash.com/photo-1555881400-74d7acaacd8b?auto=format&fit=crop&q=80&w=1200"
+                     alt="" loading="lazy" decoding="async" width="1200" height="800"
+                     class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.35] transition-all duration-700 ease-expo-out group-hover:grayscale-0 group-hover:brightness-[0.55] group-hover:scale-105">
+                <div class="relative z-10">
+                    <span class="block h-px w-10 bg-mint mb-5"></span>
+                    <span class="inline-block bg-gold text-graphite px-3 py-1 text-xs font-bold rounded-sm mb-4 tracking-wider">DIGITAL TRANSFORMATION</span>
+                    <h2 class="text-5xl md:text-6xl font-bold leading-none my-2 text-cream">LISBON</h2>
+                    <p class="text-cream/70 max-w-xs mb-4">Europe's open-source heartland — where deep tech and the builder economy converge.</p>
+                    <p class="text-cream/40 text-xs tracking-widest">PORTUGAL · Q4 2026</p>
+                </div>
+            </a>
+        </section>
+
+        <!-- Inside the room -->
+        <section class="py-28 md:py-40 px-6 max-w-7xl mx-auto">
+            <div class="reveal mb-16">
+                <p class="text-gold text-xs tracking-[0.4em] mb-6">INSIDE THE ROOM</p>
+                <div class="gold-rule mb-8"></div>
+                <h2 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight max-w-3xl">Format engineered for <span class="text-gold">signal</span>, not noise.</h2>
             </div>
-        </a>
-    </section>
 
-    <!-- Premium Footer -->
-    <footer>
-        <div class="contact-card">
-            <h3> HEADQUARTERS</h3>
-            <div class="address">
-                
+            <div class="reveal-stagger grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <article class="group bg-surface/60 border border-white/10 rounded-2xl p-8 hover:border-gold/40 transition-colors duration-500">
+                    <svg class="w-8 h-8 text-gold mb-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-8-8 18-2-8-8-2z"/></svg>
+                    <h3 class="text-xl font-bold mb-3 text-cream">Keynote Dialogues</h3>
+                    <p class="text-cream/65 leading-relaxed">Closed-door fireside conversations between operators who rarely share a room — let alone a transcript.</p>
+                </article>
 
-400 NE 3RD AVE UNIT 2708<br>
-FORT LAUDERDALE, FL 33301 US
+                <article class="group bg-surface/60 border border-white/10 rounded-2xl p-8 hover:border-gold/40 transition-colors duration-500">
+                    <svg class="w-8 h-8 text-gold mb-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+                    <h3 class="text-xl font-bold mb-3 text-cream">Working Sessions</h3>
+                    <p class="text-cream/65 leading-relaxed">Small-group problem solving with real artifacts — pre-reads, take-home frameworks, follow-up cohorts.</p>
+                </article>
+
+                <article class="group bg-surface/60 border border-white/10 rounded-2xl p-8 hover:border-gold/40 transition-colors duration-500">
+                    <svg class="w-8 h-8 text-gold mb-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M17 11a4 4 0 1 0 0-8M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2M21 21v-2a4 4 0 0 0-3-3.87"/></svg>
+                    <h3 class="text-xl font-bold mb-3 text-cream">Curated Networking</h3>
+                    <p class="text-cream/65 leading-relaxed">Invite-only attendance. We design the room — who's in it, where they sit, and who they meet first.</p>
+                </article>
+
+                <article class="group bg-surface/60 border border-white/10 rounded-2xl p-8 hover:border-gold/40 transition-colors duration-500">
+                    <svg class="w-8 h-8 text-gold mb-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                    <h3 class="text-xl font-bold mb-3 text-cream">Off-Stage</h3>
+                    <p class="text-cream/65 leading-relaxed">Programmed downtime — dinners, walks, late nights. Where the actual deals get done.</p>
+                </article>
             </div>
-            <a href="mailto:hello@savy-events.com" class="btn-web3">Register Interest</a>
-        </div>
-        <p style="margin-top: 80px; font-size: 0.7rem; color: #444;">
-            &copy; 2026 EVENT SAVY | POWERED BY WEB3 TECHNOLOGY
-        </p>
-    </footer>
+        </section>
+
+        <!-- Stats -->
+        <section class="py-24 md:py-32 px-6 bg-surface/40 border-y border-white/5">
+            <div class="reveal max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-6 text-center">
+                <div>
+                    <p class="text-5xl md:text-6xl font-bold text-gold tabular-nums" data-count="3">0</p>
+                    <p class="mt-3 text-xs tracking-[0.3em] text-cream/55">CITIES</p>
+                </div>
+                <div>
+                    <p class="text-5xl md:text-6xl font-bold text-gold tabular-nums" data-count="3">0</p>
+                    <p class="mt-3 text-xs tracking-[0.3em] text-cream/55">FLAGSHIP EVENTS / YEAR</p>
+                </div>
+                <div>
+                    <p class="text-5xl md:text-6xl font-bold text-gold tabular-nums" data-count="250">0</p>
+                    <p class="mt-3 text-xs tracking-[0.3em] text-cream/55">INVITED OPERATORS</p>
+                </div>
+                <div>
+                    <p class="text-5xl md:text-6xl font-bold text-gold tabular-nums"><span data-count="100">0</span>%</p>
+                    <p class="mt-3 text-xs tracking-[0.3em] text-cream/55">INVITATION ONLY</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <footer id="contact" class="px-5 py-24 md:py-32 bg-gradient-to-b from-graphite to-surface text-center reveal">
+            <div class="inline-block bg-surface/60 backdrop-blur-md border border-gold/20 px-8 py-12 md:p-14 rounded-3xl max-w-lg w-full">
+                <h3 class="text-gold text-lg md:text-xl tracking-[0.2em] mb-2">HEADQUARTERS</h3>
+                <div class="gold-rule mx-auto mb-6"></div>
+                <address class="not-italic text-base md:text-lg leading-relaxed text-cream/80 mb-8">
+                    400 NE 3rd Ave Unit 2708<br>
+                    Fort Lauderdale, FL 33301 US
+                </address>
+
+                <form class="flex flex-col sm:flex-row gap-3 mb-6"
+                      onsubmit="event.preventDefault(); const e = this.email.value; window.location.href = 'mailto:hello@savy-events.com?subject=Registration%20Interest%20-%20Savy%20Events&body=' + encodeURIComponent('Email: ' + e);">
+                    <label class="sr-only" for="email">Email</label>
+                    <input id="email" name="email" type="email" required placeholder="you@company.com"
+                           class="flex-1 bg-graphite/60 border border-white/10 focus:border-gold focus:outline-none rounded-md px-4 py-3 text-cream placeholder:text-cream/30 transition-colors">
+                    <button type="submit"
+                            class="bg-gold text-graphite uppercase font-bold tracking-[0.15em] px-6 py-3 rounded-md transition-all duration-300 hover:shadow-[0_0_24px_rgba(201,166,107,0.45)] focus:outline-none focus:ring-2 focus:ring-mint focus:ring-offset-2 focus:ring-offset-graphite">
+                        Request Invite
+                    </button>
+                </form>
+
+                <p class="text-cream/40 text-xs tracking-wider">Or write directly: <a href="mailto:hello@savy-events.com" class="text-gold hover:underline">hello@savy-events.com</a></p>
+            </div>
+            <p class="mt-20 text-xs text-cream/40 tracking-wider">
+                &copy; 2026 WDD Events &middot; Architecting the digital future
+            </p>
+        </footer>
+    </main>
+
+    <script>
+        // Scroll reveal
+        const io = new IntersectionObserver((entries) => {
+            for (const e of entries) {
+                if (e.isIntersecting) {
+                    e.target.classList.add('in');
+                    io.unobserve(e.target);
+                }
+            }
+        }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+        document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => io.observe(el));
+
+        // Count-up
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const counterIO = new IntersectionObserver((entries) => {
+            for (const e of entries) {
+                if (!e.isIntersecting) continue;
+                const el = e.target;
+                const target = parseInt(el.dataset.count, 10);
+                counterIO.unobserve(el);
+                if (reduce) { el.textContent = target; continue; }
+                const duration = 1400;
+                const start = performance.now();
+                const tick = (now) => {
+                    const t = Math.min(1, (now - start) / duration);
+                    const eased = 1 - Math.pow(1 - t, 3);
+                    el.textContent = Math.round(target * eased);
+                    if (t < 1) requestAnimationFrame(tick);
+                };
+                requestAnimationFrame(tick);
+            }
+        }, { threshold: 0.5 });
+        document.querySelectorAll('[data-count]').forEach(el => counterIO.observe(el));
+    </script>
 
 </body>
 </html>
