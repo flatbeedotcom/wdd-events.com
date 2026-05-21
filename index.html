@@ -281,8 +281,7 @@
                         Attendance is by invitation. Tell us where you'd like to be in the room — and why.
                     </p>
 
-                    <form class="flex flex-col sm:flex-row gap-3 mb-6"
-                          onsubmit="event.preventDefault(); const e = this.email.value; window.location.href = 'mailto:mohamed@wdd-events.com?subject=Registration%20Interest%20-%20WDD%20Events&body=' + encodeURIComponent('Email: ' + e);">
+                    <form id="invite-form" class="flex flex-col sm:flex-row gap-3 mb-6" novalidate>
                         <label class="sr-only" for="email">Email</label>
                         <input id="email" name="email" type="email" required placeholder="you@company.com"
                                class="flex-1 bg-graphite/60 border border-white/10 focus:border-gold focus:outline-none rounded-md px-4 py-3 text-cream placeholder:text-cream/30 transition-colors">
@@ -291,6 +290,16 @@
                             Request Invite
                         </button>
                     </form>
+
+                    <div id="invite-success" class="hidden mb-6 text-center" role="status" aria-live="polite">
+                        <svg class="w-12 h-12 mx-auto text-mint mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M8 12l3 3 5-6"/>
+                        </svg>
+                        <p class="text-cream text-base mb-1">Request received.</p>
+                        <p class="text-cream/55 text-sm">We'll be in touch.</p>
+                        <p class="mt-4 text-xs text-cream/40 tracking-wider">You can submit again in <span id="invite-cooldown">24h</span>.</p>
+                    </div>
 
                     <p class="text-cream/40 text-xs tracking-wider">Or write directly: <a href="mailto:mohamed@wdd-events.com" class="text-gold hover:underline">mohamed@wdd-events.com</a></p>
                 </div>
